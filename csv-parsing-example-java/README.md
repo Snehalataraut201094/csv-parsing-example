@@ -1,43 +1,47 @@
+# CSV Parsing Example Java
+
 ## Requirements
+- Read and parse data from [`purchases.csv`](/src/main/resources/purchases.csv) and [`users.csv`](/src/main/resources/users.csv) and initialize to [`Table.java`](/com/csv/Table.java)
+- [`Table.java`](/com/csv/Table.java) should be a general implementation, not specific to the data. Column names are inside .csv files and parsing should be based on this source.
+- Implement following operation:
+  - **ORDER BY DESC**  
+    **Input**: Column name  
+    **Output**: Ordered table
+    
+  - **INNER JOIN (SQL-style)**  
+    **Input**:
+      - Column name from the right table  
+      - Column name from the left table
+        
+    **Output**: Joined table
 
-* Read and parse data from [`purchases.csv`](/src/main/resources/purchases.csv) and [`users.csv`](/src/main/resources/users.csv) and initialize to [`Table.java`](/com/csv/Table.java)
-* [`Table.java`](/com/csv/Table.java) should be a general implementation, not specific to the data. Column names are inside .csv files and parsing should be based on this source.
+### ⚙️ Design Notes
+- Design an appropriate domain model (not tied to `purchases` or `users`).
+- You can modify the file/folder structure as needed.
+- Maven dependencies are allowed.
+  
+### Out-of-scope
+- NO "real" persistence necessary (do not integrate MySQL, HSQLDB, h2database, or JPA).
+- Use your own internal storage model (see also [`Table.java`](/com/csv/Table.java)).
+- NO need to implement any SQL parser or anything, Java code interface is sufficient.
+- NO Javadoc necessary. Tests and self-explanatory code are sufficient.    
 
-* Implement an ORDER BY DESC
-  * Input:
-    * the name of the column to order the rows
-  * Output: the ordered table
-
-* Implement an INNER JOIN of two tables ([SQL reference](https://www.w3schools.com/sql/sql_join.asp))
-  * Input:
-    * the name of the column to use for the join from the right table
-    * the name of the column to use for the join from the left table
-  * Output: the joined table
-
-* Structure and design [`Table.java`](/com/csv/Table.java)
-  * Think about an appropriated domain model. Hint: the domain should not be purchases and users.
-* You are not restricted to implement everything in the existing file/folder structure. Feel free to add or alter files.
-* Feel free to add Maven dependencies when you want to use external libraries.
-
-## Out-of-scope
-* NO "real" persistence necessary (do not integrate MySQL, HSQLDB, h2database, or JPA).
-  Use your own internal storage model (see also [`Table.java`](/com/csv/Table.java)).
-* NO need to implement any SQL parser or anything, Java code interface is sufficient.
-* NO Javadoc necessary. Tests and self-explanatory code are sufficient.
-
+---
 
 ## CSV parser with in-memory  table operation
-## Description
-This Java 21 application reads CSV files, stores the data in in-memory tables using Java collections, and performs operations like sorting and joining. It's a lightweight demonstration of how to handle tabular data without using a database.
 
-## Application Features:
+### Description
+- This Java 21 application reads CSV files, stores the data in in-memory tables using Java collections, and performs operations like sorting and joining.
+- It's a lightweight demonstration of how to handle tabular data without using a database.
+
+### Application Features:
 The application does following operations:
-1. Reads CSV files (users.csv and purchases.csv)
-2. Saves data into an in-memory table (such as : Map, List)
-3. Sorts table based on input column name
-4. Inner joins tables based on common key
+- Reads CSV files (users.csv and purchases.csv)
+- Saves data into an in-memory table (such as : Map, List)
+- Sorts table based on input column name
+- Inner joins tables based on common key
 
-## Technical Stack And Added Dependencies
+### Technical Stack And Added Dependencies
 - Java21
 - Junit5
 - AssertJ (v : 3.26)
@@ -50,10 +54,12 @@ The application does following operations:
 - Apache common collections (v : 4.5)
 - Apache common lang3 (v : 3.17)
 
-## Project Structure
+### Project Structure
 - `src/main/java` – core logic
 - `src/test/java` – unit tests
 - `src/main/resources` – sample CSV files
+
+---
 
 ## Running the Application
 
@@ -67,12 +73,14 @@ The application does following operations:
 - java TableApplication
 
 ## Sample CSV Format
-USER_ID,NAME,EMAIL
-2,manuel,manuel@foo.de
-1,andre,andre@bar.de
+- USER_ID,NAME,EMAIL
+- 2,manuel,manuel@foo.de
+- 1,andre,andre@bar.de
 
+---
 
-## CSV Reading and Parsing class(DataReaderImpl)
+# CSV Reading and Parsing class(DataReaderImpl)
+
 ### Purpose
 DataReaderImpl is the core component responsible for reading and parsing CSV files into a structured, in-memory Table model using pure Java and the Apache Commons CSV library.
 
@@ -91,20 +99,23 @@ DataReaderImpl is the core component responsible for reading and parsing CSV fil
 - Error Handling: Catches and wraps I/O and parsing issues into domain-specific exceptions
 - In-Memory Table Building: Constructs a Table object using parsed headers and data rows
 
-## Custom Domain Classes:
+### Custom Domain Classes:
 - Table, Row – In-memory representations
 - Result<T> – Wrapper for success/failure
 - CSVParsingException, ErrorResponse – Custom error handling
 - HttpStatusCode enum – Status code abstraction
 
 ### Returned Data Structure
-- Result<Table> : Contains the error with message and HttpStatusCode if any exception occur otherwise expected table data.
+- Result<Table>  : Contains the error with message and HttpStatusCode if any exception occur otherwise expected table data.
 
-### Located at:
+### Located at
 `src/main/java/com/csv/application/processor/DataReaderImpl.java`
 
+---
 
-## Table Sorting class(TableSorterImpl)
+
+# Table Sorting class(TableSorterImpl)
+
 ### Purpose
 - Sort the table descending order based on the input column.
 
@@ -120,10 +131,12 @@ DataReaderImpl is the core component responsible for reading and parsing CSV fil
 - Result<Table> : ErrorResponse(statusCode and errorMessage)/ Table in descending order
 
 ### Located at:
-`src/main/java/com/csv/application/processor/TableSorterImpl.java`
+- src/main/java/com/csv/application/processor/TableSorterImpl.java
 
+---
 
-## Table inner Joining class(HashJoinImpl)
+# Table inner Joining class(HashJoinImpl)
+
 ### Purpose
  - HashJoinImpl is a fast and efficient version of the TableJoiner interface that uses a hash map to quickly join 
 two in-memory CSV tables, making it ideal for handling large datasets.
@@ -154,8 +167,10 @@ two in-memory CSV tables, making it ideal for handling large datasets.
 ### Located at
 - src/main/java/com/csv/application/processor/HashJoinImpl.java
 
+---
 
-## Table inner Joining class(InnerNestedLoopJoinImpl)
+# Table inner Joining class(InnerNestedLoopJoinImpl)
+
 ### Purpose
 InnerNestedLoopJoinImpl provides a straightforward nested-loop-based implementation of the TableJoiner interface to perform an inner join between two tables.
 It is ideal for smaller datasets or debugging purposes due to its simple and readable logic.
