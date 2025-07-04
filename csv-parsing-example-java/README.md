@@ -3,7 +3,7 @@
 ## Requirements
 - Read and parse data from [`purchases.csv`](/src/main/resources/purchases.csv) and [`users.csv`](/src/main/resources/users.csv) and initialize to [`Table.java`](/com/csv/Table.java)
 - [`Table.java`](/com/csv/Table.java) should be a general implementation, not specific to the data. Column names are inside .csv files and parsing should be based on this source.
-- Implement following operation:
+- Implement following operations:
   - **ORDER BY DESC**  
     **Input**: Column name  
     **Output**: Ordered table
@@ -30,7 +30,7 @@
 
 ## CSV parser with in-memory  table operation
 
-### Description
+### Description:
 - This Java 21 application reads CSV files, stores the data in in-memory tables using Java collections, and performs operations like sorting and joining.
 - It's a lightweight demonstration of how to handle tabular data without using a database.
 
@@ -41,7 +41,7 @@ The application does following operations:
 - Sorts table based on input column name
 - Inner joins tables based on common key
 
-### Technical Stack And Added Dependencies
+### Technical Stack And Added Dependencies:
 - Java21
 - Junit5
 - AssertJ (v : 3.26)
@@ -54,7 +54,7 @@ The application does following operations:
 - Apache common collections (v : 4.5)
 - Apache common lang3 (v : 3.17)
 
-### Project Structure
+### Project Structure:
 - `src/main/java` – core logic
 - `src/test/java` – unit tests
 - `src/main/resources` – sample CSV files
@@ -63,16 +63,16 @@ The application does following operations:
 
 ## Running the Application
 
-### Prerequisites
+### Prerequisites:
 - Java 21 installed
 - Maven version 3.x
 - IDE (like IntelliJ or Eclipse)
 
-### Steps
+### Steps:
 - javac TableApplication.java
 - java TableApplication
 
-## Sample CSV Format
+## Sample CSV Format:
 - USER_ID,NAME,EMAIL
 - 2,manuel,manuel@foo.de
 - 1,andre,andre@bar.de
@@ -81,10 +81,10 @@ The application does following operations:
 
 # CSV Reading and Parsing class(DataReaderImpl)
 
-### Purpose
+### Purpose:
 DataReaderImpl is the core component responsible for reading and parsing CSV files into a structured, in-memory Table model using pure Java and the Apache Commons CSV library.
 
-### Responsibilities
+### Responsibilities:
 - Validates the input CSV file path 
 - Reads and parses CSV data using headers 
 - Converts each CSV row into a custom Row object 
@@ -92,7 +92,7 @@ DataReaderImpl is the core component responsible for reading and parsing CSV fil
 - Handles error scenarios gracefully with custom error responses 
 - Logs meaningful information for debugging
 
-### Key Behaviours
+### Key Behaviours:
 - File Validation: Checks for path validity, file existence, and file type
 - CSV Parsing: Uses Apache Commons CSV to read the file and extract headers and records
 - Data Mapping: Transforms each CSV record into a Java Row object using headers
@@ -105,15 +105,13 @@ DataReaderImpl is the core component responsible for reading and parsing CSV fil
 - CSVParsingException, ErrorResponse – Custom error handling
 - HttpStatusCode enum – Status code abstraction
 
-### Returned Data Structure
-- Result<Table>  : Contains the error with message and HttpStatusCode if any exception occur otherwise expected table data.
+### Returned Data Structure:
+- Result : Contains the error with message and HttpStatusCode if any exception occur otherwise expected table data.
 
-### Located at
-`src/main/java/com/csv/application/processor/DataReaderImpl.java`
+### Located at:
+- `src/main/java/com/csv/application/processor/DataReaderImpl.java`  
 
 ---
-
-
 # Table Sorting class(TableSorterImpl)
 
 ### Purpose
@@ -128,10 +126,10 @@ DataReaderImpl is the core component responsible for reading and parsing CSV fil
 - If the data is not numeric then using string comparator.
 
 ### Returned Data Structure
-- Result<Table> : ErrorResponse(statusCode and errorMessage)/ Table in descending order
+- Result : ErrorResponse(statusCode and errorMessage)/ Table in descending order
 
 ### Located at:
-- src/main/java/com/csv/application/processor/TableSorterImpl.java
+- `src/main/java/com/csv/application/processor/TableSorterImpl.java`
 
 ---
 
@@ -162,10 +160,10 @@ two in-memory CSV tables, making it ideal for handling large datasets.
 - HttpStatusCode – Enum abstraction for HTTP-like status codes
 
 ### Returned Data Structure
-- Result<Table> – On success, returns a Table containing merged rows. On failure, includes structured error message and status code.
+- Result – On success, returns a Table containing merged rows. On failure, includes structured error message and status code.
 
 ### Located at
-- src/main/java/com/csv/application/processor/HashJoinImpl.java
+- `src/main/java/com/csv/application/processor/HashJoinImpl.java`
 
 ---
 
@@ -196,7 +194,7 @@ It is ideal for smaller datasets or debugging purposes due to its simple and rea
 - HttpStatusCode – Standardized status enum used in responses
 
 ### Returned Data Structure
-- Result<Table> – Success result contains the joined table; failure result includes error info and status.
-
+- Result – Success result contains the joined table; failure result includes error info and status.
+                                                                                                                                                                                                                      
 ### Located at
-- src/main/java/com/csv/application/processor/InnerNestedLoopJoinImpl.java
+- `src/main/java/com/csv/application/processor/InnerNestedLoopJoinImpl.java`
