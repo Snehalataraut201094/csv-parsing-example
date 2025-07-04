@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata: 
+ name: coding-challenge-sql
+ description: "Responsible teams: @pd"
+ tags: 
+  - Java
+spec: 
+ type: service
+ lifecycle: not_defined
+ owner: PD
